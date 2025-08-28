@@ -8,7 +8,6 @@ import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import {
-  Search,
   MapPin,
   Building2,
   Mail,
@@ -155,9 +154,16 @@ export default function BusinessScanner() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div className="moving-dots">
-        {[...Array(9)].map((_, i) => (
-          <div key={i} className="dot" />
-        ))}
+        {Array.from({ length: 16 }).map((_, i) => {
+          const style = {
+            ['--i' as any]: String(Math.random()),
+            ['--j' as any]: String(Math.random()),
+            ['--size' as any]: `${4 + Math.random() * 5}px`,
+            ['--dur' as any]: `${10 + Math.random() * 10}s`,
+            ['--delay' as any]: `${-Math.random() * 10}s`,
+          } as React.CSSProperties
+          return <div key={i} className="dot" style={style} />
+        })}
       </div>
 
       <header className="relative z-10 nav-glass">
@@ -228,8 +234,7 @@ export default function BusinessScanner() {
                   </div>
                 </div>
 
-                <Button type="submit" disabled={isSubmitting} className="w-full h-14 btn-gradient font-semibold text-lg rounded-xl">
-                  <Search className="w-5 h-5 mr-2" />
+                <Button type="submit" disabled={isSubmitting} className="h-14 px-8 btn-gradient font-semibold text-lg rounded-xl block mx-auto">
                   {isSubmitting ? "Запуск..." : "Собрать контакты"}
                 </Button>
               </form>

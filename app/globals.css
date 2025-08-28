@@ -87,25 +87,41 @@
   }
   .glass-card {
     @apply bg-slate-900/40 backdrop-blur-md border border-white/10 shadow-lg;
+    transition: transform 200ms ease, box-shadow 200ms ease, filter 200ms ease;
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  .glass-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
   }
   .feature-card {
     @apply bg-slate-900/30 backdrop-blur-md border border-white/10;
+    transition: transform 200ms ease, box-shadow 200ms ease, filter 200ms ease;
+  }
+  .feature-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   }
   .btn-gradient {
     background-image: linear-gradient(90deg, #22d3ee, #3b82f6);
     color: white;
+    transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+    will-change: transform;
   }
   .btn-gradient:hover {
-    filter: brightness(1.05);
+    filter: brightness(1.08);
+    transform: scale(1.03);
+    box-shadow: 0 10px 24px rgba(34, 211, 238, 0.25), 0 6px 16px rgba(59, 130, 246, 0.2);
   }
   .gradient-text {
-    background: linear-gradient(90deg, #22d3ee, #3b82f6);
+    background: linear-gradient(90deg, #22d3ee, #a855f7);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   .gradient-text-large {
-    background: linear-gradient(90deg, #22d3ee, #3b82f6);
+    background: linear-gradient(90deg, #22d3ee, #a855f7);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -118,16 +134,24 @@
     inset: 0;
     overflow: hidden;
     pointer-events: none;
+    z-index: 0;
   }
   .moving-dots .dot {
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: var(--size, 6px);
+    height: var(--size, 6px);
     border-radius: 9999px;
-    background: radial-gradient(circle, rgba(59,130,246,0.7), rgba(59,130,246,0) 70%);
-    animation: float 12s infinite ease-in-out;
-    left: calc(10% + 80% * var(--i));
-    top: calc(10% + 80% * var(--j));
+    background: radial-gradient(circle at 30% 30%, rgba(34,211,238,0.9), rgba(168,85,247,0.85) 45%, rgba(168,85,247,0) 70%);
+    filter: blur(0.5px) saturate(110%);
+    opacity: 0.8;
+    mix-blend-mode: screen;
+    box-shadow:
+      0 0 24px rgba(168,85,247,0.35),
+      0 0 48px rgba(34,211,238,0.25);
+    animation: float var(--dur, 12s) infinite ease-in-out;
+    animation-delay: var(--delay, 0s);
+    left: calc(5% + 90% * var(--i));
+    top: calc(5% + 90% * var(--j));
   }
   @keyframes float {
     0% { transform: translateY(0) translateX(0); }
