@@ -56,8 +56,8 @@ export async function POST(req: Request) {
 
         for (const rawBusiness of rawBusinesses) {
           const website = rawBusiness.website;
-          let emails: string[] = [];
-          let socials: { [key: string]: string | undefined } = {};
+        let emails: string[] = [];
+        let socials: BusinessRecord['socials'] = {};
 
           if (website) {
             try {

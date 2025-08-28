@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'; // Переносим vi сюда
+import type { Mock } from 'vitest';
 import { POST } from '@/app/api/scan/route';
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
@@ -43,7 +44,7 @@ describe('API /api/scan', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Убедимся, что моки возвращают ожидаемые значения по умолчанию
-    (searchLocalBusinesses as vi.Mock).mockResolvedValue([
+    (searchLocalBusinesses as Mock).mockResolvedValue([
       {
         place_id: 'place_1',
         name: 'Business One',
@@ -65,11 +66,11 @@ describe('API /api/scan', () => {
         user_ratings_total: 5,
       },
     ]);
-    (scrapeContactsFromWebsite as vi.Mock).mockResolvedValue({
+    (scrapeContactsFromWebsite as Mock).mockResolvedValue({
       emails: ['info@website1.com'],
       socials: { facebook: 'http://fb.com/one' },
     });
-    (normalizeWithGemini as vi.Mock).mockImplementation((rawData: any) => { // Добавляем тип any
+    (normalizeWithGemini as Mock).mockImplementation((rawData: any) => { // Добавляем тип any
       const normalized = {
         source: 'rapidapi-local-business-data',
         collected_at: new Date().toISOString(),
@@ -91,7 +92,7 @@ describe('API /api/scan', () => {
       };
       return BusinessRecordSchema.parse(normalized); // Валидируем мок
     });
-    (appendToGoogleSheet as vi.Mock).mockResolvedValue(undefined);
+    (appendToGoogleSheet as Mock).mockResolvedValue(undefined);
   });
 
   it('should return 400 for invalid request data', async () => {
@@ -238,7 +239,7 @@ describe('API /api/scan', () => {
   });
 
   it('should handle scraping errors gracefully', async () => {
-    (scrapeContactsFromWebsite as vi.Mock).mockRejectedValueOnce(new Error('Scrape failed'));
+    (scrapeContactsFromWebsite as Mock).mockRejectedValueOnce(new Error('Scrape failed'));
 
     const req = new NextRequest('http://localhost/api/scan', {
       method: 'POST',
@@ -281,7 +282,7 @@ describe('API /api/scan', () => {
   });
 
   it('should handle normalization errors gracefully', async () => {
-    (normalizeWithGemini as vi.Mock).mockResolvedValueOnce(null); // Первый бизнес не нормализуется
+    (normalizeWithGemini as Mock).mockResolvedValueOnce(null); // Первый бизнес не нормализуется
 
     const req = new NextRequest('http://localhost/api/scan', {
       method: 'POST',
@@ -323,7 +324,7 @@ describe('API /api/scan', () => {
   });
 
   it('should handle Google Sheets append errors gracefully', async () => {
-    (appendToGoogleSheet as vi.Mock).mockRejectedValueOnce(new Error('Sheets write failed'));
+    (appendToGoogleSheet as Mock).mockRejectedValueOnce(new Error('Sheets write failed'));
 
     const req = new NextRequest('http://localhost/api/scan', {
       method: 'POST',

@@ -1,3 +1,10 @@
-// Здесь можно добавить глобальные настройки для тестов, если они нужны.
-// Например, настройка моков для fetch, или других глобальных объектов.
-// import '@testing-library/jest-dom'; // Если используете jest-dom для расширения expect
+// Глобальные настройки для тестов
+// Полифилл ReadableStream для окружений, где он отсутствует (например, при работе undici)
+try {
+  // @ts-ignore
+  if (typeof (global as any).ReadableStream === 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { ReadableStream } = require('stream/web');
+    (global as any).ReadableStream = ReadableStream;
+  }
+} catch { /* noop */ }
