@@ -26,6 +26,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { BusinessRecord, ScanRequestSchema } from "@/lib/schemas"
 import { ThemeToggle } from "@/components/theme-toggle"
+import PlanetCanvas from "@/components/planet-canvas"
+// Планета отключена до установки 3D-зависимостей
 
 type ScanFormInputs = z.infer<typeof ScanRequestSchema>;
 
@@ -166,6 +168,7 @@ export default function BusinessScanner() {
         })}
       </div>
 
+      {/* 3D-планета на фоне под поиском рендерится ниже, внутри секции */}
       <header className="relative z-10 nav-glass">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -186,7 +189,14 @@ export default function BusinessScanner() {
 
       <main className="relative z-10 container mx-auto px-6 py-16">
         {currentStage === "search" && (
-          <div className="max-w-6xl mx-auto animate-in fade-in-0 zoom-in-95 duration-500">
+          <div className="max-w-6xl mx-auto animate-in fade-in-0 zoom-in-95 duration-500 relative">
+            {/* Планета под блоком поиска */}
+            <div className="absolute inset-0 z-0 flex items-center justify-center">
+              <div className="w-[765px] h-[765px] md:w-[935px] md:h-[935px] opacity-40">
+                <PlanetCanvas embedded className="rounded-full" />
+              </div>
+            </div>
+            <div className="relative z-10">
             <div className="text-center mb-20">
               <h1 className="text-6xl md:text-8xl font-bold gradient-text-large mb-8 leading-tight">
                 Business Scanner
@@ -264,6 +274,7 @@ export default function BusinessScanner() {
                 <h3 className="text-xl font-bold text-white mb-3">Скорость получения результата</h3>
                 <p className="text-slate-300">Полная база контактов готова за несколько минут</p>
               </div>
+            </div>
             </div>
           </div>
         )}
