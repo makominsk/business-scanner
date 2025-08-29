@@ -81,8 +81,16 @@ function drawGlobe(
 
   // Гратикулы (широты/долготы)
   ctx.save()
-  ctx.strokeStyle = 'rgba(255,255,255,0.22)'
-  ctx.lineWidth = Math.max(1, r * 0.0035)
+  const neonGrad = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r)
+  neonGrad.addColorStop(0, 'rgba(34,211,238,0.7)') // Бирюзовый
+  neonGrad.addColorStop(0.5, 'rgba(168,85,247,0.7)') // Фиолетовый
+  neonGrad.addColorStop(1, 'rgba(34,211,238,0.7)') // Бирюзовый
+
+  ctx.strokeStyle = neonGrad
+  ctx.lineWidth = Math.max(1, r * 0.002) // Тонкие линии
+  ctx.shadowColor = 'rgba(168,85,247,1)' // Фиолетовое свечение, более яркое
+  ctx.shadowBlur = r * 0.04 // Увеличенный неоновый эффект
+
   for (let lat = -75; lat <= 75; lat += 15) {
     ctx.beginPath()
     let started = false
